@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart House inteligênte!">
+    <title>Painel A.R.C.A</title>
+    <style>body{font-family: Arial}</style>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="tela-login">
+    <audio id="bgm" loop>
+        <source src="{{url_for('static', filename='audios/djartmusic-i-love-my-8-bit-game-console-301272.mp3')}}" type="audio/mpeg">
+    </audio>
+    <div class="espaco">
+        <span class="estrela" style="top: 5%;left: 85%; animation-delay: 0s;"></span>
+        <span class="estrela" style="top: 15%;left: 60%; animation-delay: 2.5s;"></span>
+        <span class="estrela" style="top: 0%;left: 95%; animation-delay: 5s;"></span>
+    </div>
+    <div class="card">    
+        <h1 style="color: white; font-family: 'Press Start 2P' ,cursive;"><b><u>A.R.C.A</u></b></h1>
+        <form method="post">
+            <input name="login" placeholder="Usuário" required style="font-size: 30px;">
+            <input name="senha" type="password" placeholder="Senha" required style="font-size: 30px;">
+            <button class="butao">Entrar</button>
+        </form>
+        {% if erro %}<p>{{erro}}</p>{%endif%}
+    </div>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <button id="mute-btn">🔊</button>
+    <script>
+        const music = document.getElementById('bgm');
+        const muteBtn=document.getElementById('mute-btn');
+        music.volume = 0.03;
+        document.addEventListener("click",()=>{
+            music.play();
+        }, {once: true});
+        muteBtn.addEventListener("click",()=>{
+            music.muted= !music.muted;
+            if (music.muted){
+                muteBtn.textContent = '🔈';
+            }else{
+                muteBtn.textContent='🔊';
+            }
+        })
+    </script>
+</body>
+</html>

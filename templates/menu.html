@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart House inteligênte!">
+    <title>Menu A.R.C.A</title>
+    <style>body{font-family: Arial}</style>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <audio id="bgm" loop>
+        <source src="{{url_for('static', filename='audios/djartmusic-8-bit-console-from-my-childhood-301286.mp3')}}" type="audio/mpeg">
+    </audio>
+    <div class="espaco">
+        <span class="estrela" style="top: 5%;left: 85%; animation-delay: 0s;"></span>
+        <span class="estrela" style="top: 15%;left: 60%; animation-delay: 2.5s;"></span>
+        <span class="estrela" style="top: 0%;left: 95%; animation-delay: 5s;"></span>
+    </div>
+    <div class="card2 vidro">
+    <h2">Bem-Vindo(a), {{usuario['usuario_nome']}}!</h2>
+    <div class="atalhos">
+        <a class="atalho" href="{{url_for('casa')}}">Casa</a>
+        <a class="atalho" href="{{url_for('arcade')}}">Arcade</a>
+        <a class="sair butao" href="{{url_for('sair')}}">sair</a>
+        {% if usuario['usuario_posicao'] == 'ADMINISTRADOR' %}
+            <a class="atalho" href="{{ url_for('admin') }}">Administração</a>
+        {% endif %}
+    </div> 
+    </div>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <button id="mute-btn">🔊</button>
+    <script>
+        const music = document.getElementById('bgm');
+        const muteBtn=document.getElementById('mute-btn');
+        music.volume = 0.03;
+        document.addEventListener("click",()=>{
+            music.play();
+        }, {once: true});
+        muteBtn.addEventListener("click",()=>{
+            music.muted= !music.muted;
+            if (music.muted){
+                muteBtn.textContent = '🔈';
+            }else{
+                muteBtn.textContent='🔊';
+            }
+        })
+    </script>
+</body>
+</html>

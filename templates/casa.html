@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart House inteligênte!">
+    <title>Casa A.R.C.A</title>
+    <style>body{font-family: Arial}</style>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+<body>
+    <audio id="bgm" loop>
+        <source src="{{url_for('static', filename='audios/djartmusic-the-world-of-8-bit-games-301273.mp3')}}" type="audio/mpeg">
+    </audio>
+    <div class="espaco">
+        <span class="estrela" style="top: 5%;left: 85%; animation-delay: 0s;"></span>
+        <span class="estrela" style="top: 15%;left: 60%; animation-delay: 2.5s;"></span>
+        <span class="estrela" style="top: 0%;left: 95%; animation-delay: 5s;"></span>
+    </div>
+    <div class="card2 vidro">
+        <h2>Casa</h2>
+        <div class="atalhos">
+            {% for c in comodos %}
+                <a class="atalho" href="{{url_for('comodos', nome=c) }}">{{ c }}</a>
+            {% endfor %}
+        </div>
+        <a class="butao" href="{{url_for('menu')}}">Voltar</a>
+    </div>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <button id="mute-btn">🔊</button>
+    <script>
+        const music = document.getElementById('bgm');
+        const muteBtn=document.getElementById('mute-btn');
+        music.volume = 0.03;
+        document.addEventListener("click",()=>{
+            music.play();
+        }, {once: true});
+        muteBtn.addEventListener("click",()=>{
+            music.muted= !music.muted;
+            if (music.muted){
+                muteBtn.textContent = '🔈';
+            }else{
+                muteBtn.textContent='🔊';
+            }
+        })
+    </script>
+</body>
+</html>

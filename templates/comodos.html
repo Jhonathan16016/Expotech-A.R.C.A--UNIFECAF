@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart House inteligênte!">
+    <title>{{nome}}</title>
+    <style>body{font-family: Arial}</style>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <audio id="bgm" loop>
+        <source src="{{url_for('static', filename='audios/djartmusic-so-happy-with-my-8-bit-game-301275.mp3')}}" type="audio/mpeg">
+    </audio>
+    <div class="espaco">
+        <span class="estrela" style="top: 5%;left: 85%; animation-delay: 0s;"></span>
+        <span class="estrela" style="top: 15%;left: 60%; animation-delay: 2.5s;"></span>
+        <span class="estrela" style="top: 0%;left: 95%; animation-delay: 5s;"></span>
+    </div>
+    <div class="card2 vidro larga">
+        <h2 style="font-family: Press Start 2P",cursive;>{{nome}}</h2>
+        
+        <div class="aparelhos">
+        {%for id, dados in aparelhos.items()%}
+            {%set e = dados[0].estado() %}
+            {% set ativo= e.startswith('Ligad') or e.startswith('Abert')%}
+            {% set tipo= dados[0].__class__.__name__%}
+            <div class="aparelho">
+                <div class="topo">
+                    <span class="nome-aparelho">{{dados[0].nome}}</span>
+                    <span class="selo {{'on' if ativo else 'off'}}">{{e}}</span>
+                </div>
+
+                {% if dados[0].temperatura_atual is defined %}
+                   <div>temperatura: <span class="temp" data-url="{{url_for('api_temp', nome=nome, disp_id=id)}}">{{dados[0].temperatura_atual|round(1)}}</span>°C</div>
+                {%endif%}
+                <div class="botoes">
+                    {%if tipo in botoes%}
+                        {%for cmd, rotulo in botoes[tipo]%} 
+                            <form method="post" action="{{url_for('especial', nome=nome, disp_id=id, comando=cmd)}}" style="display: inline;">
+                                <button class="butao">{{rotulo}}</button>
+                            </form>   
+                        {%endfor%}
+                    {% else %}
+                        {%if dados[1]%}
+                            <form method="post" action="{{url_for('acao', nome=nome, disp_id=id, acao='ligar')}}" style="display: inline;">
+                                <button class="butao">Ligar / Abrir</button>
+                            </form>
+                        {%endif%}
+                        {%if dados[2]%}
+                            <form method="post" action="{{url_for('acao', nome=nome, disp_id=id, acao='desligar')}}" style="display: inline;">
+                                <button class="butao">Desligar / Fechar</button>
+                            </form>
+                        {%endif%}
+                    {%endif%}
+                </div>
+            </div>
+        {%endfor%}
+        </div>
+        <a class="butao" href="{{url_for('casa')}}">Voltar</a>
+    </div>
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <button id="mute-btn">🔊</button>
+    <script>
+        const music = document.getElementById('bgm');
+        const muteBtn=document.getElementById('mute-btn');
+        music.volume = 0.03;
+        document.addEventListener("click",()=>{
+            music.play();
+        }, {once: true});
+        muteBtn.addEventListener("click",()=>{
+            music.muted= !music.muted;
+            if (music.muted){
+                muteBtn.textContent = '🔈';
+            }else{
+                muteBtn.textContent='🔊';
+            }
+        })
+    </script>
+</body>
+</html>
